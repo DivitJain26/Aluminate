@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { X } from "lucide-react";
-
+import { Link } from "react-router-dom";
 export default function Sidebar({ isOpen, setIsOpen }) {
   // const [isOpen, setIsOpen] = useState(false);
 
@@ -17,18 +17,18 @@ export default function Sidebar({ isOpen, setIsOpen }) {
       </button>
     </div>
     <nav className="mt-6 space-y-4 px-6">
-      <a href="/dashboard" className="block hover:text-purple-200">
-        Home
-      </a>
-      <a href="/directory" className="block hover:text-purple-200">
-        Search
-      </a>
-      <a href="/profile" className="block hover:text-purple-200">
-        Profile
-      </a>
-      <a href="/messages" className="block hover:text-purple-200">
-        Messages
-      </a>
+       <Link to="/dashboard" className="block hover:text-purple-200">
+          Home
+        </Link>
+        <Link to="/search" className="block hover:text-purple-200">
+          Search
+        </Link>
+        <Link to="/profile" className="block hover:text-purple-200">
+          Profile
+        </Link>
+        <Link to="/messages" className="block hover:text-purple-200">
+          Messages
+        </Link>
     </nav>
   </div>
   );
