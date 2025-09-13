@@ -1,137 +1,115 @@
 import { Users, MessageSquare, Shield, BookOpen, GraduationCap, Mail } from "lucide-react";
-
+import React, { useState } from "react";
+import { Menu, X } from "lucide-react";
+import Sidebar from "../components/Sidebar";
 export default function DashboardUI() {
+  const [isOpen, setIsOpen] = useState(false);
+  const name = "Arya"; // replace with actual user name (from props/context)
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-gray-900">
-      {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-2xl text-white p-8 mb-8 shadow-md">
-        <div className="flex items-center mb-4">
-          <div className="w-14 h-14 mr-4 bg-white/20 rounded-full flex items-center justify-center">
-            <GraduationCap className="w-7 h-7" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold">Welcome, John Doe</h1>
-            <p className="text-blue-100 text-base">
-              Your personalized alumni dashboard
-            </p>
-          </div>
+     <div className="min-h-screen bg-gray-50 text-gray-900 flex">
+      {/* Sidebar */}
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      {/* <div
+        className={`fixed top-0 left-0 h-full w-64 bg-purple-700 text-white transform ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } transition-transform duration-300 ease-in-out z-50`}
+      >
+        <div className="flex items-center justify-between px-6 py-4 border-b border-purple-500">
+          <h2 className="text-xl font-bold">Menu</h2>
+          <button onClick={() => setIsOpen(false)}>
+            <X className="w-6 h-6" />
+          </button>
         </div>
+        <nav className="mt-6 space-y-4 px-6">
+          <a href="/" className="block hover:text-purple-200">
+            Home
+          </a>
+          <a href="/directory" className="block hover:text-purple-200">
+            Alumni Directory
+          </a>
+          <a href="/messages" className="block hover:text-purple-200">
+            Messages
+          </a>
+          <a href="/settings" className="block hover:text-purple-200">
+            Settings
+          </a>
+        </nav>
+      </div> */}
 
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-          <div className="bg-white/20 rounded-lg p-4">
-            <div className="text-xl font-semibold">ABC University</div>
-            <div className="text-blue-100">College</div>
-          </div>
-          <div className="bg-white/20 rounded-lg p-4">
-            <div className="text-xl font-semibold">B.Tech</div>
-            <div className="text-blue-100">Course</div>
-          </div>
-          <div className="bg-white/20 rounded-lg p-4">
-            <div className="text-xl font-semibold">Computer Science</div>
-            <div className="text-blue-100">Specialization</div>
-          </div>
+      {/* Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Main Content */}
+      <div className="flex-1 max-w-7xl mx-auto px-6 py-8 relative">
+        {/* Menu Button (fixed top-left corner) */}
+        <button
+          onClick={() => setIsOpen(true)}
+          className="p-2 rounded-md hover:bg-purple-100 fixed top-4 left-4 z-30"
+        >
+          <Menu className="w-6 h-6 text-purple-700" />
+        </button>
+
+        {/* Welcome Section (slightly bigger but left-aligned) */}
+       {/* Welcome Section */}
+{/* Welcome Section */}
+<div className="bg-purple-600 text-white rounded-xl p-8 mb-8 shadow-md h-85 flex items-center justify-between">
+  {/* Left side: text */}
+  <div>
+    <h2 className="text-3xl font-bold">Welcome, {name} 🎉</h2>
+    <p className="mt-4 text-purple-100 text-lg max-w-md">
+  Stay connected with your alumni and explore new opportunities.  
+  Find mentorship, career guidance, and networking events to help you grow.
+</p>
+  </div>
+
+  {/* Right side: SVG */}
+  <img 
+    src="/connect2.svg" 
+    alt="College illustration" 
+    className="h-90 w-120 object-contain"
+  />
+</div>
+
+<div className="flex-1 min-h-0">
+  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-full">
+    {/* Stats Grid (4 boxes) */}
+    <div className="grid grid-cols-2 gap-2 lg:col-span-2 h-full">
+      {[
+        { title: "Connected Alumni", value: "128" },
+        { title: "Total Alumni", value: "560" },
+        { title: "Total Students", value: "900" },
+        { title: "Connected Students", value: "340" },
+      ].map((stat, idx) => (
+        <div
+          key={idx}
+          className="bg-white rounded-lg shadow-md p-10 flex flex-col justify-center items-center h-full"
+        >
+          <h3 className="text-base font-semibold text-purple-700">
+            {stat.title}
+          </h3>
+          <p className="mt-1 text-xl font-bold">{stat.value}</p>
         </div>
-      </div>
+      ))}
+    </div>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {[
-          {
-            title: "Connect with Alumni",
-            desc: "Find and network with graduates from your institution.",
-            color: "bg-blue-600",
-            icon: <Users className="w-6 h-6 text-white" />,
-          },
-          {
-            title: "Messages",
-            desc: "Communicate securely with your peers and alumni.",
-            color: "bg-green-600",
-            icon: <MessageSquare className="w-6 h-6 text-white" />,
-          },
-          {
-            title: "Admin Panel",
-            desc: "Manage users, permissions, and platform settings.",
-            color: "bg-purple-600",
-            icon: <Shield className="w-6 h-6 text-white" />,
-          },
-        ].map((card, i) => (
-          <div
-            key={i}
-            className="bg-white rounded-xl shadow-md hover:shadow-lg transition duration-200 cursor-pointer border border-gray-100"
-          >
-            <div className="p-6">
-              <div
-                className={`${card.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
-              >
-                {card.icon}
-              </div>
-              <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
-              <p className="text-gray-600 text-sm">{card.desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Profile Summary */}
-      <div className="bg-white rounded-xl shadow-md p-6">
-        <h2 className="text-2xl font-bold mb-6">Your Profile</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Academic Details */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-blue-700" />
-              Academic Details
-            </h3>
-            <dl className="space-y-3">
-              <div className="flex justify-between border-b pb-2">
-                <dt className="text-gray-600">College</dt>
-                <dd className="font-medium">ABC University</dd>
-              </div>
-              <div className="flex justify-between border-b pb-2">
-                <dt className="text-gray-600">Course</dt>
-                <dd className="font-medium">B.Tech</dd>
-              </div>
-              <div className="flex justify-between border-b pb-2">
-                <dt className="text-gray-600">Specialization</dt>
-                <dd className="font-medium">Computer Science</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="text-gray-600">Duration</dt>
-                <dd className="font-medium">2020 - 2024</dd>
-              </div>
-            </dl>
-          </div>
-
-          {/* Status & Role */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <GraduationCap className="w-5 h-5 text-indigo-700" />
-              Status & Role
-            </h3>
-            <dl className="space-y-3">
-              <div className="flex justify-between border-b pb-2">
-                <dt className="text-gray-600">Status</dt>
-                <dd>
-                  <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                    Student
-                  </span>
-                </dd>
-              </div>
-              <div className="flex justify-between border-b pb-2">
-                <dt className="text-gray-600">Role</dt>
-                <dd>
-                  <span className="px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
-                    Admin
-                  </span>
-                </dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="text-gray-600">Email</dt>
-                <dd className="font-medium truncate">johndoe@example.com</dd>
-              </div>
-            </dl>
-          </div>
-        </div>
+    {/* What's New Box */}
+    <div className="bg-white rounded-lg shadow-md p-4 h-full">
+      <h3 className="text-xl font-bold text-purple-700 mb-4">What's New</h3>
+      <ul className="space-y-3 text-sm text-gray-700">
+        <li>Alumni Meetup scheduled for Sept 25</li>
+        <li>15 new job postings this week</li>
+        <li>Student-alumni mentorship program launched</li>
+        <li> Spotlight: Alumni success stories updated</li>
+      </ul>
+    </div>
+  </div>
+</div>
       </div>
     </div>
   );
