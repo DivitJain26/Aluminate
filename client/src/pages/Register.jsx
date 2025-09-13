@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -82,6 +82,7 @@ const Register = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [skills, setSkills] = useState([]);
     const [skillInput, setSkillInput] = useState('');
+    const navigate = useNavigate();
 
     const { register, handleSubmit, formState: { errors }, setValue } = useForm({
         resolver: zodResolver(registrationSchema),
@@ -106,6 +107,7 @@ const Register = () => {
         console.log(data);
         // Handle registration logic here
         alert('Registration successful!');
+        navigate('/dashboard');
     };
 
     return (
