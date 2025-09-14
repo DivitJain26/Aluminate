@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         // Check if user is logged in by verifying with the server
         const savedUser = localStorage.getItem('user');
-
+        
         if (savedUser) {
             try {
                 const userData = JSON.parse(savedUser);

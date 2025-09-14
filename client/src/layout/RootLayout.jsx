@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import Sidebar from "../components/Sidebar.jsx";
 import { Menu } from "lucide-react";
 import { Outlet } from "react-router-dom";
+import Sidebar from "../components/Sidebar.jsx";
+import { useAuth } from "../hooks/useAuth.jsx";
 
 export default function RootLayout() {
     const [isOpen, setIsOpen] = useState(false);
+    const { logout } = useAuth();
 
     return (
         <div className="min-h-screen bg-gray-50 text-gray-900 flex">
             {/* Sidebar */}
-            <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+            <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} onLogout={logout}/>
 
             {/* Overlay */}
             {isOpen && (
