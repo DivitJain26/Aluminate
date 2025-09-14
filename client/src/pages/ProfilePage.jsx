@@ -1,49 +1,27 @@
-import { useState, useRef } from "react";
-import { Edit, Menu, Camera } from "lucide-react";
-
+import { useRef, } from "react";
+import { Edit,Camera } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
+import { Link } from "react-router-dom";
 export default function ProfilePage() {
-    
+    const { user } = useAuth();
     const fileInputRef = useRef(null);
+    const name = user.name ?? "there"
+    const email = user.email ?? "there"
+    const college = user.collegeName ?? "MIT ADT University"
+    const course = user.course ?? "N/A";
+    const specialization = user.specialization ?? "N/A";
+    const yearOfJoining = user.yearOfJoining ?? "N/A";
+    const yearOfPassing = user.yearOfPassing ?? "N/A";
+    const profileImage = user.profileImage ?? "";
+    const bio = user.bio.length > 0 ? user.bio : "No bio added yet.";
+    const skills = user.skills && user.skills.length > 0
+        ? user.skills
+        : ["No skills added yet"];
+    const currentCompany = user.currentCompany ?? "";
+    const currentPosition = user.currentPosition ?? "";
+    const linkedinProfile = user.linkedinProfile ?? "";
+    const githubProfile = user.githubProfile ?? "";
 
-    // Dummy data
-    const [profile, setProfile] = useState({
-        name: "Arya Phansalkar",
-        email: "arya@mituniv.edu",
-        photo: "https://via.placeholder.com/100",
-        mobile: "+91-9876543210",
-        abcId: "ABC123",
-        institution: "MIT ADT University",
-        degree: "B.Tech",
-        branch: "CSE - AI & Analytics",
-        admissionYear: "2023",
-        gradYear: "2027",
-        currentYear: "2nd Year",
-        cgpa: "8.7",
-        skills: ["Python", "React", "Machine Learning"],
-        projects: [
-            {
-                title: "Cafe Management System",
-                desc: "Python project for managing cafe orders.",
-                link: "https://github.com/example/cafe-project",
-            },
-        ],
-        internships: [
-            {
-                company: "ABC Corp",
-                role: "Intern - Data Science",
-                duration: "2 months",
-            },
-        ],
-    });
-
-    // Handle photo upload
-    const handlePhotoChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setProfile((prev) => ({ ...prev, photo: imageUrl }));
-        }
-    };
 
     return (
         <div className="min-h-screen bg-purple-50">
@@ -56,30 +34,35 @@ export default function ProfilePage() {
                 <div className="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-6 flex items-center space-x-6">
                     <div className="relative">
                         <img
-                            src={profile.photo}
+                            src={profileImage || "https://via.placeholder.com/100"}
                             alt="Profile"
                             className="w-24 h-24 rounded-full object-cover border-4 border-purple-200"
                         />
                         {/* Edit Icon Overlay */}
-                        <button
-                            onClick={() => fileInputRef.current.click()}
-                            className="absolute bottom-0 right-0 bg-purple-600 p-2 rounded-full text-white shadow-md hover:bg-purple-700"
-                        >
-                            <Camera className="w-4 h-4" />
-                        </button>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            ref={fileInputRef}
-                            onChange={handlePhotoChange}
-                            className="hidden"
-                        />
+                        <Link to="/edit-profile">
+                            <button
+                                onClick={() => fileInputRef.current.click()}
+                                className="absolute bottom-0 right-0 bg-purple-600 p-2 rounded-full text-white shadow-md hover:bg-purple-700"
+                            >
+                                <Camera className="w-4 h-4" />
+                            </button>
+                        </Link>
                     </div>
                     <div>
                         <h2 className="text-2xl font-semibold text-purple-700">
-                            {profile.name}
+                            {name}
                         </h2>
-                        <p className="text-gray-500">{profile.email}</p>
+                        <p className="text-gray-500">{email}</p>
+                    </div>
+                </div>
+
+                {/* Bio Section */}
+                <div className="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-6">
+                    <h3 className="text-xl font-semibold text-purple-700 mb-4">
+                        Bio
+                    </h3>
+                    <div className="space-y-2 text-gray-700">
+                        <p>{bio}</p>
                     </div>
                 </div>
 
@@ -91,29 +74,23 @@ export default function ProfilePage() {
                     <div className="space-y-2 text-gray-700">
                         <p>
                             <span className="font-semibold">Institution:</span>{" "}
-                            {profile.institution}
+                            {college}
                         </p>
                         <p>
-                            <span className="font-semibold">Degree:</span> {profile.degree}
+                            <span className="font-semibold">Course:</span> {course}
                         </p>
                         <p>
-                            <span className="font-semibold">Branch:</span> {profile.branch}
+                            <span className="font-semibold">Specialization:</span> {specialization}
                         </p>
                         <p>
                             <span className="font-semibold">Admission Year:</span>{" "}
-                            {profile.admissionYear}
+                            {yearOfJoining}
                         </p>
                         <p>
                             <span className="font-semibold">Graduation Year:</span>{" "}
-                            {profile.gradYear}
+                            {yearOfPassing}
                         </p>
-                        <p>
-                            <span className="font-semibold">Current Year:</span>{" "}
-                            {profile.currentYear}
-                        </p>
-                        <p>
-                            <span className="font-semibold">CGPA:</span> {profile.cgpa}
-                        </p>
+
                     </div>
                 </div>
 
@@ -121,7 +98,12 @@ export default function ProfilePage() {
                 <div className="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-6">
                     <h3 className="text-xl font-semibold text-purple-700 mb-4">Skills</h3>
                     <div className="flex flex-wrap gap-2">
-                        {profile.skills.map((skill, idx) => (
+                        {(skills
+                            ? Array.isArray(skills)
+                                ? skills
+                                : skills.split(",").map(s => s.trim())
+                            : ["No skills added yet"]
+                        ).map((skill, idx) => (
                             <span
                                 key={idx}
                                 className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm"
@@ -135,49 +117,46 @@ export default function ProfilePage() {
                 {/* Experience */}
                 <div className="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-6">
                     <h3 className="text-xl font-semibold text-purple-700 mb-4">
-                        Experience
+                        Job/Internship Experience
                     </h3>
+                    <div className="space-y-2 text-gray-700">
+                        <p>
+                            <span className="font-semibold">Current Company:</span>{" "}
+                            {currentCompany}
+                        </p>
+                        <p>
+                            <span className="font-semibold">Current Position:</span>{" "}
+                            {currentPosition}
+                        </p>
 
-                    {/* Projects */}
-                    <div>
-                        <h4 className="font-semibold text-gray-800 mb-2">Projects:</h4>
-                        <ul className="list-disc ml-6 space-y-1">
-                            {profile.projects.map((proj, idx) => (
-                                <li key={idx}>
-                                    <span className="font-medium">{proj.title}</span> - {proj.desc}
-                                    {proj.link && (
-                                        <a
-                                            href={proj.link}
-                                            className="text-purple-600 ml-2 underline"
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-                                            Link
-                                        </a>
-                                    )}
-                                </li>
-                            ))}
-                        </ul>
                     </div>
 
-                    {/* Internships */}
-                    <div className="mt-4">
-                        <h4 className="font-semibold text-gray-800 mb-2">Internships:</h4>
-                        <ul className="list-disc ml-6 space-y-1">
-                            {profile.internships.map((intern, idx) => (
-                                <li key={idx}>
-                                    {intern.company} - {intern.role} ({intern.duration})
-                                </li>
-                            ))}
-                        </ul>
+                </div>
+
+                <div className="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-6">
+                    <h3 className="text-xl font-semibold text-purple-700 mb-4">
+                        Additional Information
+                    </h3>
+                    <div className="space-y-2 text-gray-700">
+                        <p>
+                            <span className="font-semibold">LinkedIn:</span>{" "}
+                            {linkedinProfile}
+                        </p>
+                        <p>
+                            <span className="font-semibold">Github:</span>{" "}
+                            {githubProfile}
+                        </p>
                     </div>
+
                 </div>
 
                 {/* Edit Button */}
                 <div className="flex justify-center mt-6">
-                    <button className="flex items-center px-6 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition">
-                        <Edit className="w-5 h-5 mr-2" /> Edit
-                    </button>
+                    <Link to="/edit-profile">
+                        <button className="flex items-center px-6 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition">
+                            <Edit className="w-5 h-5 mr-2" /> Edit
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>

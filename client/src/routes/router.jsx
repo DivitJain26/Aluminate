@@ -10,6 +10,7 @@ import SearchPage from '../pages/SearchPage';  //Added by Arya
 import Dashboard from '../pages/Dashboard'; //Added by Arya
 import RootLayout from '../layout/RootLayout';
 import ProfilePage from '../pages/ProfilePage';
+import EditProfile from '../pages/EditProfile';
 export const router = createBrowserRouter([
     {
         element: <ProtectedRoute />,
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
                     { path: "dashboard", element: <Dashboard /> },
                     { path: "search", element: <SearchPage /> },
                     { path: "/profile", element: <ProfilePage /> },
+                    { path: "/edit-profile", element: <EditProfile /> },
                 ],
             },
         ]

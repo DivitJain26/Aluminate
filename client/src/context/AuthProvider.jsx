@@ -151,7 +151,7 @@ export const AuthProvider = ({ children }) => {
 
                 // Update localStorage
                 localStorage.setItem('user', JSON.stringify(updatedUser));
-
+                 console.log('User profile updated:', updatedUser);
                 // Update state
                 setUser(updatedUser);
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, register, refreshToken, getCurrentUser, logout } from '../controllers/auth.controller.js';
+import { login, register, refreshToken, getCurrentUser, logout ,updateProfile} from '../controllers/auth.controller.js';
 import { authenticate } from '../middlewares/auth.middleware.js';
 import { validateRegister, validateLogin } from '../middlewares/validation.middleware.js';
 
@@ -13,6 +13,6 @@ router.post('/logout', logout);
 router.post('/refresh', refreshToken);
 
 router.get('/me', authenticate, getCurrentUser);
-   
+router.put('/profile', authenticate, updateProfile);
 
 export default router;
