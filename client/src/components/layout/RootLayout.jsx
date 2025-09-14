@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Menu } from "lucide-react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "../components/Sidebar.jsx";
-import { useAuth } from "../hooks/useAuth.jsx";
+import Sidebar from "./Sidebar.jsx";
+import { useAuth } from "../../hooks/useAuth.jsx";
 
 export default function RootLayout() {
     const [isOpen, setIsOpen] = useState(false);

@@ -1,6 +1,6 @@
 import { Outlet, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import LoadingSpinner from '../components/LoadingSpinner.jsx';
+import LoadingSpinner from '../components/common/LoadingSpinner.jsx';
 
 
 const PublicRoute = () => {
