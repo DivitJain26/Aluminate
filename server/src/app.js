@@ -1,6 +1,6 @@
 import express from "express"
 import cors from "cors"
-import dotenv from "dotenv";
+
 import cookieParser from "cookie-parser"
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -8,9 +8,8 @@ import morgan from 'morgan';
 import { getEnv } from "./utils/env.js"
 
 // import routes
-// import authRoutes from "./routes/auth.route.js"
+import authRoutes from "./routes/auth.routes.js"
 
-dotenv.config();
 
 const app = express()
 
@@ -41,6 +40,6 @@ app.use(morgan('dev')); // logs method, URL, status, response time, etc.
 
 
 // routes
-// app.use("/api/auth", authRoutes)
+app.use("/api/auth", authRoutes)
 
 export { app }

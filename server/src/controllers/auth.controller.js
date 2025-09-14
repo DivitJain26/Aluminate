@@ -6,7 +6,7 @@ import { setTokenCookies } from "../utils/cookies.js";
 
 export const register = async (req, res) => {
     try {
-        // console.log(req.body); 
+        console.log(req.body); 
         const { name, email, password, role } = req.body;
 
         // Check if user already exists
@@ -41,17 +41,23 @@ export const register = async (req, res) => {
         res.status(201).json({
             success: true,
             message: 'User registered successfully',
-            user: {
-                id: newUser._id,
-                name: newUser.name,
-                email: newUser.email,
-                role: newUser.role
+            data: {
+                user: {
+                    id: newUser._id,
+                    name: newUser.name,
+                    email: newUser.email,
+                    role: newUser.role
+                }
             }
         });
 
     } catch (error) {
         console.log(`Regestration Error ${error}`);
-        res.status(500).json({ error: `Regestration Error ${error}` });
+        res.status(500).json({
+            success: false,
+            message: `Regestration Error ${error}`,
+            data: null 
+        });
     }
 }
 
@@ -85,17 +91,23 @@ export const login = async (req, res) => {
         res.status(200).json({
             success: true,
             message: 'Login successful',
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.userEmail,
-                role: user.role,
+            data:{
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.userEmail,
+                    role: user.role,
+                }
             }
         });
 
     } catch (error) {
         console.log(`Login Error ${error}`);
-        res.status(400).json({ error: 'Login failed' });
+        res.status(400).json({ 
+            success: false,
+            message: 'Login failed',
+            data: null
+        });
     }
 }
 
@@ -132,12 +144,17 @@ export const refreshToken = async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: 'Token refreshed successfully',
+            data: null
         });
 
     } catch (error) {
         console.log(`Refresh Token Error ${error}`);
         if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
-            res.status(401).json({ error: `Refresh Token Error ${error}` });
+            res.status(401).json({ 
+                success: false,
+                message: `Refresh Token Error ${error}`,
+                data: null
+            });
         }
     }
 }
@@ -176,10 +193,15 @@ export const logout = async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: 'Logged out successfully',
+            data: null
         });
     } catch (error) {
         console.log(`Logout Error ${error}`);
-        res.status(400).json({ error: `Logout Error ${error}` });
+        res.status(400).json({ 
+            success: false,
+            message: `Logout Error ${error}`,
+            data: null
+        });
     }
 }
 
@@ -199,15 +221,22 @@ export const getCurrentUser = async (req, res, next) => {
 
         res.status(200).json({
             success: true,
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-            },
+            message: 'User fetched successfully',
+            data: {
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                },
+            }
         });
     } catch (error) {
         console.log(`Get user Error ${error}`);
-        res.status(400).json({ error: `Get user Error ${error}` });
+        res.status(400).json({ 
+            success: false,
+            message: `Get user Error ${error}`,
+            data: null
+        });
     }
 };

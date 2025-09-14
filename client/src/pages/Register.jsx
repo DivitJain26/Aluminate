@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useAuth } from '../hooks/useAuth.jsx';
 
 // Define Zod schema for form validation
 const registrationSchema = z.object({
@@ -44,28 +45,8 @@ const registrationSchema = z.object({
     yearOfPassing: z.number()
         .min(2000, 'Year must be 2000 or later')
         .max(new Date().getFullYear() + 10, 'Year cannot be more than 10 years in the future'),
-
-    profileImage: z.string().optional(),
-
-    bio: z.string()
-        .max(500, 'Bio cannot exceed 500 characters')
-        .optional(),
-
-    skills: z.array(z.string().max(50)).optional(),
-
-    currentCompany: z.string()
-        .max(200, 'Company name cannot exceed 200 characters')
-        .optional(),
-
-    currentPosition: z.string()
-        .max(100, 'Position cannot exceed 100 characters')
-        .optional(),
-
-    linkedinProfile: z.url('Please provide a valid URL').optional().or(z.literal('')),
-
-    githubProfile: z.url('Please provide a valid URL').optional().or(z.literal(''))
-
 })
+
     .refine((data) => data.yearOfPassing >= data.yearOfJoining, {
         message: "Year of passing must be after year of joining",
         path: ["yearOfPassing"],
@@ -77,40 +58,40 @@ const registrationSchema = z.object({
         path: ["confirmPassword"],
     });
 
+// Default values for testing
+const defaultValues = {
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    password: 'aA@12345',
+    confirmPassword: 'aA@12345',
+    collegeName: 'ABC University of Technology',
+    abcId: 'ABC12345',
+    enrollment: 'ADT23SOCB0374',
+    course: 'CSE',
+    specialization: 'AI',
+    yearOfJoining: 2020,
+    yearOfPassing: 2024,
+};
+
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [skills, setSkills] = useState([]);
-    const [skillInput, setSkillInput] = useState('');
+    const { register: registerUser } = useAuth();
 
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm({
+    const { register: registerField, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(registrationSchema),
+        defaultValues: defaultValues
     });
-
-    const addSkill = () => {
-        if (skillInput.trim() && !skills.includes(skillInput.trim())) {
-            const newSkills = [...skills, skillInput.trim()];
-            setSkills(newSkills);
-            setValue('skills', newSkills);
-            setSkillInput('');
-        }
-    };
-
-    const removeSkill = (skillToRemove) => {
-        const newSkills = skills.filter(skill => skill !== skillToRemove);
-        setSkills(newSkills);
-        setValue('skills', newSkills);
-    };
 
     const onSubmit = (data) => {
         console.log(data);
         // Handle registration logic here
-        alert('Registration successful!');
+        registerUser(data);
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-50 py-8 px-4">
-            <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-br from-purple-200 to-indigo-200 py-8 px-4">
+            <div className="max-w-4xl mx-auto bg-gray-100 rounded-xl shadow-lg overflow-hidden">
                 <div className="md:flex">
                     {/* Sidebar with refined design */}
                     <div className="md:w-2/5 bg-gradient-to-br from-purple-900 to-indigo-900 p-8 text-white hidden md:block">
@@ -120,7 +101,7 @@ const Register = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                 </svg>
                             </div>
-                            <h1 className="text-2xl font-bold">Alumni Connect</h1>
+                            <h1 className="text-2xl font-bold">Aluminate</h1>
                         </div>
                         <h2 className="text-2xl font-bold mb-6">Join Our Community</h2>
                         <p className="mb-6 text-purple-200">Connect with your college community, network with alumni, and discover opportunities.</p>
@@ -171,7 +152,7 @@ const Register = () => {
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
                                     <input
-                                        {...register('name')}
+                                        {...registerField('name')}
                                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                         placeholder="Enter your full name"
                                     />
@@ -181,7 +162,7 @@ const Register = () => {
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
                                     <input
-                                        {...register('email')}
+                                        {...registerField('email')}
                                         type="email"
                                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                         placeholder="Enter your email"
@@ -195,7 +176,7 @@ const Register = () => {
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Password *</label>
                                     <div className="relative">
                                         <input
-                                            {...register('password')}
+                                            {...registerField('password')}
                                             type={showPassword ? "text" : "password"}
                                             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                             placeholder="Create a password"
@@ -224,7 +205,7 @@ const Register = () => {
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password *</label>
                                     <div className="relative">
                                         <input
-                                            {...register('confirmPassword')}
+                                            {...registerField('confirmPassword')}
                                             type={showConfirmPassword ? "text" : "password"}
                                             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                             placeholder="Confirm your password"
@@ -253,7 +234,7 @@ const Register = () => {
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">College Name *</label>
                                 <input
-                                    {...register('collegeName')}
+                                    {...registerField('collegeName')}
                                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                     placeholder="Enter your college name"
                                 />
@@ -264,7 +245,7 @@ const Register = () => {
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">ABC ID *</label>
                                     <input
-                                        {...register('abcId')}
+                                        {...registerField('abcId')}
                                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                         placeholder="e.g. ABC12345"
                                     />
@@ -274,7 +255,7 @@ const Register = () => {
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Enrollment Number *</label>
                                     <input
-                                        {...register('enrollment')}
+                                        {...registerField('enrollment')}
                                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                         placeholder="e.g. ADT23SOCB001"
                                     />
@@ -284,7 +265,7 @@ const Register = () => {
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Course *</label>
                                     <input
-                                        {...register('course')}
+                                        {...registerField('course')}
                                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                         placeholder="e.g. B.Tech, MBA"
                                     />
@@ -294,7 +275,7 @@ const Register = () => {
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Specialization *</label>
                                     <input
-                                        {...register('specialization')}
+                                        {...registerField('specialization')}
                                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                         placeholder="e.g. Computer Science"
                                     />
@@ -306,7 +287,7 @@ const Register = () => {
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Year of Joining *</label>
                                     <input
-                                        {...register('yearOfJoining', { valueAsNumber: true })}
+                                        {...registerField('yearOfJoining', { valueAsNumber: true })}
                                         type="number"
                                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                         placeholder="YYYY"
@@ -317,57 +298,13 @@ const Register = () => {
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Year of Passing *</label>
                                     <input
-                                        {...register('yearOfPassing', { valueAsNumber: true })}
+                                        {...registerField('yearOfPassing', { valueAsNumber: true })}
                                         type="number"
                                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                         placeholder="YYYY"
                                     />
                                     {errors.yearOfPassing && <p className="text-red-500 text-xs mt-1">{errors.yearOfPassing.message}</p>}
                                 </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Skills</label>
-                                <div className="flex">
-                                    <input
-                                        value={skillInput}
-                                        onChange={(e) => setSkillInput(e.target.value)}
-                                        className="flex-grow px-4 py-2.5 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                        placeholder="Add a skill"
-                                    />
-                                    <button
-                                        type="button"
-                                        className="bg-purple-600 text-white px-4 rounded-r-lg hover:bg-purple-700 transition-colors"
-                                        onClick={addSkill}
-                                    >
-                                        Add
-                                    </button>
-                                </div>
-                                <div className="flex flex-wrap gap-2 mt-2">
-                                    {skills.map((skill, index) => (
-                                        <span key={index} className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm flex items-center">
-                                            {skill}
-                                            <button
-                                                type="button"
-                                                className="ml-2 text-purple-500 hover:text-purple-800"
-                                                onClick={() => removeSkill(skill)}
-                                            >
-                                                &times;
-                                            </button>
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
-                                <textarea
-                                    {...register('bio')}
-                                    rows="3"
-                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                    placeholder="Tell us about yourself"
-                                ></textarea>
-                                {errors.bio && <p className="text-red-500 text-xs mt-1">{errors.bio.message}</p>}
                             </div>
 
                             <div className="pt-4">

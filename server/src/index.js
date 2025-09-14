@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+// Load environment variables FIRST before any other imports
+dotenv.config({path: '../.env'});
 import { app } from "./app.js";
 import connectDB from "./config/db.js"
 import { getEnv } from "./utils/env.js";

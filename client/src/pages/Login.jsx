@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useAuth } from '../hooks/useAuth.jsx';
 
 // Define Zod schema for form validation
 const loginSchema = z.object({
@@ -14,6 +15,7 @@ const loginSchema = z.object({
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const { login } = useAuth();
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(loginSchema),
@@ -22,11 +24,12 @@ const Login = () => {
     const onSubmit = (data) => {
         console.log(data);
         // Handle login logic here
+        login(data);
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-50 flex items-center justify-center py-8 px-4">
-            <div className="max-w-4xl w-full mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-br from-purple-200 to-indigo-200 flex items-center justify-center py-8 px-4">
+            <div className="max-w-4xl w-full mx-auto bg-gray-100 rounded-xl shadow-2xl overflow-hidden">
                 <div className="md:flex">
                     {/* Sidebar with refined design - Same as registration page */}
                     <div className="md:w-2/5 bg-gradient-to-br from-purple-900 to-indigo-900 p-8 text-white hidden md:block">
@@ -36,7 +39,7 @@ const Login = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                 </svg>
                             </div>
-                            <h1 className="text-2xl font-bold">Alumni Connect</h1>
+                            <h1 className="text-2xl font-bold">Aluminate</h1>
                         </div>
                         <h2 className="text-2xl font-bold mb-6">Welcome Back</h2>
                         <p className="mb-6 text-purple-200">Reconnect with your college community, network with alumni, and discover opportunities.</p>

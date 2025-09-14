@@ -72,65 +72,6 @@ export const validateRegister = [
             }
             return true;
         }),
-
-    body('currentStatus')
-        .optional()
-        .isIn(['student', 'alumni']).withMessage('Current status must be either student or alumni'),
-
-    body('role')
-        .optional()
-        .isIn(['student', 'alumni', 'admin']).withMessage('Role must be student, alumni, or admin'),
-
-    body('bio')
-        .optional()
-        .trim()
-        .isLength({ max: 500 }).withMessage('Bio cannot exceed 500 characters'),
-
-    body('skills')
-        .optional()
-        .isArray().withMessage('Skills must be an array')
-        .custom((skills) => {
-            if (skills && skills.length > 0) {
-                for (const skill of skills) {
-                    if (typeof skill !== 'string' || skill.length > 50) {
-                        throw new Error('Each skill must be a string not exceeding 50 characters');
-                    }
-                }
-            }
-            return true;
-        }),
-
-    body('currentCompany')
-        .optional()
-        .trim()
-        .isLength({ max: 200 }).withMessage('Current company cannot exceed 200 characters'),
-
-    body('currentPosition')
-        .optional()
-        .trim()
-        .isLength({ max: 100 }).withMessage('Current position cannot exceed 100 characters'),
-
-    body('linkedinProfile')
-        .optional()
-        .trim()
-        .isURL().withMessage('Please provide a valid LinkedIn URL')
-        .custom((value) => {
-            if (value && !value.includes('linkedin.com')) {
-                throw new Error('Please provide a valid LinkedIn URL');
-            }
-            return true;
-        }),
-
-    body('githubProfile')
-        .optional()
-        .trim()
-        .isURL().withMessage('Please provide a valid GitHub URL')
-        .custom((value) => {
-            if (value && !value.includes('github.com')) {
-                throw new Error('Please provide a valid GitHub URL');
-            }
-            return true;
-        })
 ];
 
 export const validateLogin = [
