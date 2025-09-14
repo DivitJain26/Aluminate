@@ -80,7 +80,7 @@ const Register = () => {
 
     const { register: registerField, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(registrationSchema),
-        defaultValues: defaultValues
+        // defaultValues: defaultValues
     });
 
     const onSubmit = (data) => {

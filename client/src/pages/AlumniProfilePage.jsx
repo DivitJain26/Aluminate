@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
-    Building, BookOpen, Calendar, MessageCircle, Link as LinkIcon, Github, ChevronLeft, ChevronRight} from "lucide-react";
+    Building, BookOpen, Calendar, MessageCircle, Link as LinkIcon, Github, ChevronLeft, Linkedin} from "lucide-react";
 import { usersAPI } from '../utils/api';
 import ProfileHeader from '../components/ui/ProfileHeader';
 import LoadingSkeleton from '../components/ui/LoadingSkeleton';
