@@ -3,7 +3,7 @@
 ## Project Setup Guide
 ### Install Dependencies
 
-**Install root dependencies:**
+**Install dependencies:**
 ```bash
 npm install:all
 ```
@@ -26,4 +26,4 @@ Starts both frontend and backend concurrently (if configured)
 npm run dev:all
 ```
 
-> Make sure `concurrently` is installed if using `npm run dev`.
+> Make sure `concurrently` is installed if using `npm run dev:all`.

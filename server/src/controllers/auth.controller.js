@@ -1,18 +1,33 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
-import { getEnv } from "../utils/env.js";
 import { generateTokens } from "../utils/tokens.js";
 import { setTokenCookies } from "../utils/cookies.js";
 
 export const register = async (req, res) => {
     try {
-        // console.log(req.body); 
-        const { name, email, password, role } = req.body;
+        console.log(req.body);
+        const {
+            name,
+            email,
+            password,
+            fullName,
+            collegeName,
+            course,
+            abcId,
+            enrollment,
+            specialization,
+            yearOfJoining,
+            yearOfPassing
+        } = req.body;
 
         // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(402).json({ user: existingUser, error: 'User already exists' });
+            return res.status(402).json({
+                success: false,
+                message: 'User already exists',
+                data: null
+            });
         }
 
         // Password validation
@@ -25,7 +40,14 @@ export const register = async (req, res) => {
             name,
             email,
             password,
-            role
+            fullName,
+            collegeName,
+            course,
+            abcId,
+            enrollment,
+            specialization,
+            yearOfJoining,
+            yearOfPassing
         });
 
         // Generate tokens
@@ -38,38 +60,54 @@ export const register = async (req, res) => {
         // Set cookies
         setTokenCookies(res, accessToken, refreshToken);
 
+        const userData = newUser.getPublicProfile();
+
         res.status(201).json({
             success: true,
             message: 'User registered successfully',
-            user: {
-                id: newUser._id,
-                name: newUser.name,
-                email: newUser.email,
-                role: newUser.role
+            data: {
+                user: userData
             }
         });
 
     } catch (error) {
         console.log(`Regestration Error ${error}`);
-        res.status(500).json({ error: `Regestration Error ${error}` });
+        res.status(500).json({
+            success: false,
+            message: `Regestration Error: ${error}`,
+            data: null
+        });
     }
 }
 
 export const login = async (req, res) => {
     try {
+        console.log(req.body);
         const { email, password } = req.body;
         const user = await User.findOne({ email }).select('+password')
 
         // Check if user exists
         if (!user) {
-            return res.status(402).json({ error: "Invalid credentials" });
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid credentials',
+                data: null
+            });
         }
 
         // Check if password is correct
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
-            return res.status(402).json({ error: "Invalid credentials" });
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid credentials',
+                data: null
+            });
         }
+
+        // Update last login
+        user.lastLoginAt = new Date();
+        await user.save();
 
         // Generate token
         const { accessToken, refreshToken } = generateTokens(user._id);
@@ -81,21 +119,25 @@ export const login = async (req, res) => {
         // Set cookies
         setTokenCookies(res, accessToken, refreshToken);
 
+        // Return user data without password
+        const userData = user.getPublicProfile();
+
         const { _id, name, email: userEmail, role } = user;
         res.status(200).json({
             success: true,
             message: 'Login successful',
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.userEmail,
-                role: user.role,
+            data: {
+                user: userData
             }
         });
 
     } catch (error) {
-        console.log(`Login Error ${error}`);
-        res.status(400).json({ error: 'Login failed' });
+        console.log(`Login Error: ${error}`);
+        res.status(400).json({
+            success: false,
+            message: 'Login failed',
+            data: null
+        });
     }
 }
 
@@ -106,17 +148,25 @@ export const refreshToken = async (req, res, next) => {
         const refreshToken = req.cookies.refreshToken || req.body.refreshToken;
 
         if (!refreshToken) {
-            return res.status(401).json({ error: 'Refresh token not found' });
+            return res.status(401).json({ 
+                success: false,
+                message: 'Refresh token not found', 
+                data: null
+            });
         }
 
         // Verify refresh token
-        const decoded = jwt.verify(refreshToken, getEnv('JWT_REFRESH_TOKEN_SECRET'));
+        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET);
 
         // Find user with matching refresh token
         const user = await User.findById(decoded.id).select('+refreshToken');;
 
         if (!user || user.refreshToken !== refreshToken) {
-            return res.status(401).json({ error: 'Invalid refresh token' });
+            return res.status(401).json({ 
+                success: false,
+                message: 'Invalid refresh token',
+                data: null
+            });
         }
 
         // Generate new tokens
@@ -132,12 +182,17 @@ export const refreshToken = async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: 'Token refreshed successfully',
+            data: null
         });
 
     } catch (error) {
         console.log(`Refresh Token Error ${error}`);
         if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
-            res.status(401).json({ error: `Refresh Token Error ${error}` });
+            res.status(401).json({
+                success: false,
+                message: `Refresh Token Error: ${error}`,
+                data: null
+            });
         }
     }
 }
@@ -156,8 +211,8 @@ export const logout = async (req, res, next) => {
 
         const baseCookieOptions = {
             httpOnly: true,
-            secure: getEnv('NODE_ENV') === 'production',
-            sameSite: getEnv('ACCESS_AND_REFRESH_TOKEN_COOKIE_SAME_SITE'),
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.ACCESS_AND_REFRESH_TOKEN_COOKIE_SAME_SITE,
             maxAge: 0, // Set maxAge to 0 to delete the cookie
         }
 
@@ -176,10 +231,16 @@ export const logout = async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: 'Logged out successfully',
+            data: null
         });
+
     } catch (error) {
         console.log(`Logout Error ${error}`);
-        res.status(400).json({ error: `Logout Error ${error}` });
+        res.status(400).json({
+            success: false,
+            message: `Logout Error: ${error}`,
+            data: null
+        });
     }
 }
 
@@ -188,26 +249,37 @@ export const getCurrentUser = async (req, res, next) => {
     try {
 
         if (!req.user?.id) {
-            res.status(401).json({ error: 'Unauthorized - User not authenticated' });
+            res.status(401).json({ 
+                success: false,
+                message: 'Unauthorized - User not authenticated',
+                data: null
+            });
             return;
         }
 
         const user = await User.findById(req.user.id);
         if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ 
+                success: false,
+                message: 'User not found',
+                data: null
+            });
         }
 
+        const userData = user.getPublicProfile();
         res.status(200).json({
             success: true,
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-            },
+            message: 'User fetched successfully',
+            data: {
+                user: userData
+            }
         });
     } catch (error) {
         console.log(`Get user Error ${error}`);
-        res.status(400).json({ error: `Get user Error ${error}` });
+        res.status(400).json({
+            success: false,
+            message: `Get user Error ${error}`,
+            data: null
+        });
     }
 };

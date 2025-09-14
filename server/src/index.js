@@ -1,8 +1,7 @@
 import { app } from "./app.js";
 import connectDB from "./config/db.js"
-import { getEnv } from "./utils/env.js";
 
-const PORT = getEnv('PORT') || 5000
+const PORT = process.env.PORT || 5000
 
 connectDB()
     .then(() => {
