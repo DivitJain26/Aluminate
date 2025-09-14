@@ -1,4 +1,4 @@
-import { body } from 'express-validator';
+import { body, query } from 'express-validator';
 
 export const validateRegister = [
     body('name')
@@ -166,3 +166,14 @@ export const validateChangePassword = [
             return true;
         })
 ];
+
+export const profileSearchValidator = [
+    query('search').optional().trim().isLength({ max: 100 }),
+    query('collegeName').optional().trim().isLength({ max: 200 }),
+    query('course').optional().trim().isLength({ max: 100 }),
+    query('specialization').optional().trim().isLength({ max: 100 }),
+    query('yearOfPassing').optional().isInt({ min: 2000, max: new Date().getFullYear() + 10 }),
+    query('skills').optional().trim(),
+    query('page').optional().isInt({ min: 1 }),
+    query('limit').optional().isInt({ min: 1, max: 100 })
+]
