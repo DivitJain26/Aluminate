@@ -283,3 +283,34 @@ export const getCurrentUser = async (req, res, next) => {
         });
     }
 };
+
+// auth.controller.js
+export const updateProfile = async (req, res) => {
+  try {
+    const { email, ...updates } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required to update profile" });
+    }
+
+    const user = await User.findOneAndUpdate(
+      { email },      // find user by email
+      { $set: updates },  // apply updates
+      { new: true }   // return updated user
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error updating profile",
+      error: error.message,
+    });
+  }
+};
