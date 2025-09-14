@@ -19,6 +19,7 @@ export const router = createBrowserRouter([
                 children: [
                     { path: "dashboard", element: <Dashboard /> },
                     { path: "search", element: <SearchPage /> },
+                    { path: "/profile", element: <ProfilePage /> },
                 ],
             },
         ]
@@ -29,7 +30,6 @@ export const router = createBrowserRouter([
             { path: "/", element: <Landing /> },
             { path: "/login", element: <Login /> },
             { path: "/register", element: <Register /> },
-            { path: "/profile", element: <ProfilePage /> },
         ]
     },
 ]);
