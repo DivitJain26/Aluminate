@@ -21,7 +21,7 @@ api.interceptors.response.use(
 
             try {
                 // Attempt to refresh token
-                await axios.post('/auth/refresh', {}, { withCredentials: true });
+                await api.post('/auth/refresh', {}, { withCredentials: true });
                 // Retry the original request
                 return api(originalRequest);
             } catch (refreshError) {

@@ -1,19 +1,21 @@
-    export default function DashboardUI() {
-    const name = "Arya"; // replace with actual user name (from props/context)
+import { useAuth } from "../hooks/useAuth";
+
+
+export default function DashboardUI() {
+    const {user} = useAuth();
+    const name = user.name ?? "there" // replace with actual user name (from props/context)
 
     return (
         <div className="min-h-screen bg-gray-50 text-gray-900 flex">
             {/* Sidebar */}
             {/* <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} /> */}
 
-            
+
             {/* Main Content */}
             <div className="flex-1 max-w-7xl mx-auto px-6 py-8 relative">
                 {/* Menu Button (fixed top-left corner) */}
-               
+
                 {/* Welcome Section (slightly bigger but left-aligned) */}
-                {/* Welcome Section */}
-                {/* Welcome Section */}
                 <div className="bg-purple-600 text-white rounded-xl p-8 mb-8 shadow-md h-85 flex items-center justify-between">
                     {/* Left side: text */}
                     <div>
