@@ -42,4 +42,31 @@ export const authAPI = {
     updateProfile: (updates) => api.put('/auth/profile', updates),
 };
 
+// Users API
+export const usersAPI = {
+    getAlumni: (filters = {}) => {
+        const params = new URLSearchParams();
+        Object.keys(filters).forEach(key => {
+            if (filters[key]) params.append(key, filters[key]);
+        });
+        return api.get(`/users/profiles?${params}`);
+    },
+
+    getUserById: (id) => api.get(`/users/profiles/${id}`),
+
+    // getStats: () => api.get('/users/stats/overview'),
+
+    // getAllUsers: (filters = {}) => {
+    //     const params = new URLSearchParams();
+    //     Object.keys(filters).forEach(key => {
+    //         if (filters[key]) params.append(key, filters[key]);
+    //     });
+    //     return api.get(`/users/admin/all?${params}`);
+    // },
+
+    // updateUserRole: (id, role) => api.put(`/users/${id}/role`, { role }),
+    
+    // updateUserStatus: (id, isActive) => api.put(`/users/${id}/status`, { isActive }),
+};
+
 export default api;

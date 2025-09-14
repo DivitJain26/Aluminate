@@ -8,9 +8,11 @@ import Register from '../pages/Register';
 import Landing from '../pages/Landing'; //Added by Arya 
 import SearchPage from '../pages/SearchPage';  //Added by Arya
 import Dashboard from '../pages/Dashboard'; //Added by Arya
-import RootLayout from '../layout/RootLayout';
+import RootLayout from '../components/layout/RootLayout'; // Corrected import path 
 import ProfilePage from '../pages/ProfilePage';
 import EditProfile from '../pages/EditProfile';
+import AlumniProfilePage from '../pages/AlumniProfilePage';
+
 export const router = createBrowserRouter([
     {
         element: <ProtectedRoute />,
@@ -22,6 +24,7 @@ export const router = createBrowserRouter([
                     { path: "search", element: <SearchPage /> },
                     { path: "/profile", element: <ProfilePage /> },
                     { path: "/edit-profile", element: <EditProfile /> },
+                    { path: "alumni/:id", element: <AlumniProfilePage />}
                 ],
             },
         ]
