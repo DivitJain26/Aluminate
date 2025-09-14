@@ -7,7 +7,7 @@ import Landing from '../pages/Landing'; //Added by Arya
 import SearchPage from '../pages/SearchPage'; '../pages/SearchPage'; //Added by Arya
 import Dashboard from '../pages/Dashboard'; //Added by Arya
 import RootLayout from '../layout/RootLayout';
-
+import ProfilePage from '../pages/ProfilePage';
 export const router = createBrowserRouter([
     {
         element: <RootLayout />,
@@ -19,4 +19,5 @@ export const router = createBrowserRouter([
     { path: "/", element: <Landing /> },
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Register /> },
+    { path: "/profile", element: <ProfilePage /> },
 ]);
