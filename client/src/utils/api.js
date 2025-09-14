@@ -52,7 +52,7 @@ export const usersAPI = {
         return api.get(`/users/profiles?${params}`);
     },
 
-    getUserById: (id) => api.get(`/usersprofiles/${id}`),
+    getUserById: (id) => api.get(`/users/profiles/${id}`),
 
     // getStats: () => api.get('/users/stats/overview'),
 

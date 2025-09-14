@@ -10,6 +10,7 @@ import SearchPage from '../pages/SearchPage';  //Added by Arya
 import Dashboard from '../pages/Dashboard'; //Added by Arya
 import RootLayout from '../components/layout/RootLayout'; // Corrected import path 
 import ProfilePage from '../pages/ProfilePage';
+import AlumniProfilePage from '../pages/AlumniProfilePage';
 
 export const router = createBrowserRouter([
     {
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
                     { path: "dashboard", element: <Dashboard /> },
                     { path: "search", element: <SearchPage /> },
                     { path: "/profile", element: <ProfilePage /> },
+                    { path: "alumni/:id", element: <AlumniProfilePage />}
                 ],
             },
         ]
