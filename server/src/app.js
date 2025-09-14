@@ -1,21 +1,21 @@
 import express from "express"
 import cors from "cors"
-
+import dotenv from "dotenv";
 import cookieParser from "cookie-parser"
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
-import { getEnv } from "./utils/env.js"
 
 // import routes
 import authRoutes from "./routes/auth.routes.js"
 
+dotenv.config({path: './.env'});
 
 const app = express()
 
 app.use(
     cors({
-        origin: getEnv('CORS_ORIGIN') ?? 'http://localhost:5173',
+        origin: process.env.CORS_ORIGIN ?? 'http://localhost:5173',
         credentials: true
     })
 )

@@ -49,12 +49,12 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    const login = async (email, password) => {
+    const login = async (credentials) => {
         setIsLoading(true);
         setError(null);
 
         try {
-            const response = await authAPI.login({ email, password });
+            const response = await authAPI.login(credentials);
 
             if (response.data.success) {
                 const userData = response.data.data.user;

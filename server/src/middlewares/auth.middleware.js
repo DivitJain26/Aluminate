@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js'; 
-import { getEnv } from '../utils/env.js';
 
 export const authenticate = async (req, res, next) => {
     try {
@@ -16,7 +15,7 @@ export const authenticate = async (req, res, next) => {
 
         try {
             // Verify token
-            const decoded = jwt.verify(token, getEnv('JWT_ACCESS_TOKEN_SECRET'));
+            const decoded = jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET);
 
             // console.log('req.user:', req.user);
 

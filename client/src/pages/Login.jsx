@@ -10,7 +10,6 @@ const loginSchema = z.object({
     email: z.email('Please provide a valid email address'),
     password: z.string()
         .min(1, 'Password is required'),
-    rememberMe: z.boolean().optional()
 });
 
 const Login = () => {
@@ -114,8 +113,8 @@ const Login = () => {
                                     >
                                         {showPassword ? (
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 极速3 3 0 016 0z"></path>
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7极速z"></path>
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                             </svg>
                                         ) : (
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -125,23 +124,6 @@ const Login = () => {
                                     </button>
                                 </div>
                                 {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
-                            </div>
-
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                    <input
-                                        {...register('rememberMe')}
-                                        type="checkbox"
-                                        id="rememberMe"
-                                        className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
-                                    />
-                                    <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-700">
-                                        Remember me
-                                    </label>
-                                </div>
-                                <a href="/forgot-password" className="text-sm text-purple-600 hover:text-purple-500">
-                                    Forgot password?
-                                </a>
                             </div>
 
                             <div className="pt-4">
