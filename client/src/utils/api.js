@@ -71,7 +71,9 @@ export const usersAPI = {
 
 // Admin API
 export const adminAPI = {
-    downloadData: () => api.get('/admin/download')
+    downloadData: () => api.get('/admin/download' ,{
+      responseType: "blob", // 👈 ensures Excel comes as binary
+    })
 }
 
 export default api;

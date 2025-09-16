@@ -9,6 +9,7 @@ import morgan from 'morgan';
 // import routes
 import authRoutes from "./routes/auth.routes.js"
 import userRoutes from "./routes/user.routes.js"
+import adminRoutes from "./routes/admin.routes.js" //arya added this
 
 dotenv.config({path: './.env'});
 
@@ -43,5 +44,6 @@ app.use(morgan('dev')); // logs method, URL, status, response time, etc.
 // routes
 app.use("/api/auth", authRoutes)
 app.use("/api/users", userRoutes)
+app.use("/api/admin", adminRoutes); //arya added this
 
 export { app }
