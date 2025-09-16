@@ -3,15 +3,15 @@ import { createBrowserRouter } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import PublicRoute from './PublicRoute';
 
-import Login from '../pages/Login';
-import Register from '../pages/Register';
-import Landing from '../pages/Landing'; //Added by Arya 
-import SearchPage from '../pages/SearchPage';  //Added by Arya
-import Dashboard from '../pages/Dashboard'; //Added by Arya
+import LoginPage from '../pages/auth/LoginPage.jsx';
+import RegisterPage from '../pages/auth/RegisterPage.jsx';
+import LandingPage from '../pages/LandingPage.jsx'; //Added by Arya 
+import SearchPage from '../pages/SearchPage.jsx';  //Added by Arya
+import DashboardPage from '../pages/DashboardPage.jsx'; //Added by Arya
 import RootLayout from '../components/layout/RootLayout'; // Corrected import path 
-import ProfilePage from '../pages/ProfilePage';
-import EditProfile from '../pages/EditProfile';
-import AlumniProfilePage from '../pages/AlumniProfilePage';
+import ProfilePage from '../pages/profile/MyProfilePage.jsx';
+import EditProfilePage from '../pages/profile/EditProfilePage.jsx';
+import ViewProfilePage from '../pages/profile/ViewProfilePage.jsx';
 
 export const router = createBrowserRouter([
     {
@@ -20,11 +20,11 @@ export const router = createBrowserRouter([
             {
                 element: <RootLayout />,
                 children: [
-                    { path: "dashboard", element: <Dashboard /> },
-                    { path: "search", element: <SearchPage /> },
-                    { path: "/profile", element: <ProfilePage /> },
-                    { path: "/edit-profile", element: <EditProfile /> },
-                    { path: "alumni/:id", element: <AlumniProfilePage />}
+                    { path: "/dashboard", element: <DashboardPage /> },
+                    { path: "/search", element: <SearchPage /> },
+                    { path: "/my-profile", element: <ProfilePage /> },
+                    { path: "/edit-profile", element: <EditProfilePage /> },
+                    { path: "/view-profile/:id", element: <ViewProfilePage />}
                 ],
             },
         ]
@@ -32,9 +32,9 @@ export const router = createBrowserRouter([
     {
         element: <PublicRoute />,
         children: [
-            { path: "/", element: <Landing /> },
-            { path: "/login", element: <Login /> },
-            { path: "/register", element: <Register /> },
+            { path: "/", element: <LandingPage /> },
+            { path: "/login", element: <LoginPage /> },
+            { path: "/register", element: <RegisterPage /> },
         ]
     },
 ]);

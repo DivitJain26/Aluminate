@@ -34,7 +34,7 @@ export const useAlumniSearch = () => {
                 if (!queryParams[key]) delete queryParams[key];
             });
 
-            const response = await usersAPI.getAlumni(queryParams);
+            const response = await usersAPI.getUser(queryParams);
 
             if (response.data.success) {
                 setAlumni(response.data.data.alumni);

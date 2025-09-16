@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useAuth } from '../hooks/useAuth.jsx';
+import { useAuth } from '../../hooks/useAuth.jsx';
 
 // Define Zod schema for form validation
 const registrationSchema = z.object({
@@ -39,7 +39,7 @@ const registrationSchema = z.object({
         .max(100, 'Specialization cannot exceed 100 characters'),
 
     yearOfJoining: z.number()
-        .min(2000, 'Year must be 2000 or later')
+        .min(1980, 'Year must be 2000 or later')
         .max(new Date().getFullYear() + 5, 'Year cannot be more than 5 years in the future'),
 
     yearOfPassing: z.number()
@@ -73,7 +73,7 @@ const defaultValues = {
     yearOfPassing: 2024,
 };
 
-const Register = () => {
+const RegisterPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const { register: registerUser } = useAuth();
@@ -334,4 +334,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default RegisterPage;

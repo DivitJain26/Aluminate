@@ -1,6 +1,6 @@
-import React from 'react'
 import { Link } from 'react-router-dom';
-const Landing = () => {
+
+const LandingPage = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-700 to-purple-500 text-white flex flex-col">
             {/* Navbar */}
@@ -98,4 +98,4 @@ const Landing = () => {
     )
 }
 
-export default Landing
+export default LandingPage

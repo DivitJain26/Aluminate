@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useAuth } from '../hooks/useAuth.jsx';
+import { useAuth } from '../../hooks/useAuth.jsx';
 
 // Define Zod schema for form validation
 const loginSchema = z.object({
@@ -12,7 +12,7 @@ const loginSchema = z.object({
         .min(1, 'Password is required'),
 });
 
-const Login = () => {
+const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { login } = useAuth();
 
@@ -144,4 +144,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LoginPage;

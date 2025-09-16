@@ -1,9 +1,11 @@
 import { useRef, } from "react";
-import { Edit,Camera } from "lucide-react";
-import { useAuth } from "../hooks/useAuth";
+import { Edit, Camera } from "lucide-react";
+import { useAuth } from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
-export default function ProfilePage() {
+
+export default function MyProfilePage() {
     const { user } = useAuth();
+
     const fileInputRef = useRef(null);
     const name = user.name ?? "there"
     const email = user.email ?? "there"

@@ -39,12 +39,12 @@ export const authAPI = {
     register: (userData) => api.post('/auth/register', userData),
     login: (credentials) => api.post('/auth/login', credentials),
     getProfile: () => api.get('/auth/me'),
-    updateProfile: (updates) => api.put('/auth/profile', updates),
+    updateProfile: (updates) => api.put('/auth/updateProfile', updates),
 };
 
 // Users API
 export const usersAPI = {
-    getAlumni: (filters = {}) => {
+    getUser: (filters = {}) => {
         const params = new URLSearchParams();
         Object.keys(filters).forEach(key => {
             if (filters[key]) params.append(key, filters[key]);
@@ -68,5 +68,10 @@ export const usersAPI = {
     
     // updateUserStatus: (id, isActive) => api.put(`/users/${id}/status`, { isActive }),
 };
+
+// Admin API
+export const adminAPI = {
+    downloadData: () => api.get('/admin/download')
+}
 
 export default api;

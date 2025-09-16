@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/user.model.js'; 
+import User from '../models/user.model.js';
 
-export const authenticate = async (req, res, next) => {
+export const authenticateToken = async (req, res, next) => {
     try {
 
         // Get token from cookie
@@ -10,7 +10,7 @@ export const authenticate = async (req, res, next) => {
         // Check if token exists
         if (!token) {
             res.status(401).json({ error: 'No token provided' });
-            return 
+            return
         }
 
         try {
@@ -23,7 +23,7 @@ export const authenticate = async (req, res, next) => {
             const user = await User.findById(decoded.id);
             if (!user) {
                 res.status(401).json({ error: 'User not found' });
-                return 
+                return
             }
 
             req.user = {
@@ -37,12 +37,41 @@ export const authenticate = async (req, res, next) => {
             console.log(`Authenticate Error: ${error}`);
             if (error.name === 'TokenExpiredError') {
                 res.status(401).json({ error: 'Token expired' });
-                return 
+                return
             }
             res.status(401).json({ error: 'Invalid token' });
-            return 
+            return
         }
     } catch (error) {
         next(error);
     }
 }
+
+const requireRole = (...roles) => {
+    return (req, res, next) => {
+        if (!req.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Authentication required'
+            });
+        }
+
+        if (!roles.includes(req.user.role.toLowerCase())) {
+            return res.status(403).json({
+                success: false,
+                message: `This action requires one of the following roles: ${roles.join(', ')}`
+            });
+        }
+
+        next();
+    };
+};
+
+// Middleware to check if user is admin
+export const requireAdmin = requireRole('admin');
+
+// // Middleware to check if user is alumni or admin
+// const requireAlumniOrAdmin = requireRole('alumni', 'admin');
+
+// // Middleware to check if user is student or alumni (excluding admin-only routes)
+// const requireStudentOrAlumni = requireRole('student', 'alumni');

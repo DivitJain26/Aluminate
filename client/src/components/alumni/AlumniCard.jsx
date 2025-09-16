@@ -74,7 +74,7 @@ export default function AlumniCard({ person, loading }) {
                 </div>
 
                 <Link
-                    to={`/alumni/${person._id}`}
+                    to={`/view-profile/${person._id}`}
                     className="w-full bg-purple-600 text-white py-2 px-4 rounded-xl hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 flex items-center justify-center"
                 >
                     <User className="w-4 h-4 mr-2" />

@@ -27,7 +27,7 @@ export default function Sidebar({ isOpen, setIsOpen, onLogout }) {
                 <Link to="/search" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-purple-100 transition">
                     <Search className="w-5 h-5" /> Search
                 </Link>
-                <Link to="/profile" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-purple-100 transition">
+                <Link to="/my-profile" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-purple-100 transition">
                     <User className="w-5 h-5" /> Profile
                 </Link>
                 <Link to="/messages" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-purple-100 transition">

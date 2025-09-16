@@ -1,7 +1,7 @@
 import { useAuth } from "../hooks/useAuth";
 
 
-export default function DashboardUI() {
+export default function DashboardPage() {
     const {user} = useAuth();
     const name = user.name ?? "there" // replace with actual user name (from props/context)
 
