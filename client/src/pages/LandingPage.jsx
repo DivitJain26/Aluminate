@@ -90,6 +90,42 @@ const LandingPage = () => {
                 </div>
             </div>
 
+            {/* College Registration Section */}
+            <div className="bg-white text-purple-900 py-10 px-6">
+                <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-12">
+                    {/* Left: Image */}
+                    <div>
+                        <img
+                            src="/college-admin.svg" // replace with your svg
+                            alt="College Registration"
+                            className="w-full max-w-sm md:max-w-md drop-shadow-lg"
+                        />
+                    </div>
+
+
+                    {/* Right: Text + Button */}
+                    <div className="flex justify-center items-center">
+                        <div className="text-center md:text-left flex flex-col items-center md:items-start">
+                            <h3 className="text-3xl font-bold mb-4">For Institutions</h3>
+                            <p className="text-lg mb-6 max-w-md">
+                                Want to register your college on
+                                <span className="font-semibold"> Aluminate </span>
+                                and give your students & alumni a platform to stay connected?
+                                Create a vibrant community where achievements are celebrated,
+                                opportunities are shared, and meaningful networks thrive beyond graduation.
+                            </p>
+                            <button
+                                className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold shadow-md hover:bg-purple-500 transition"
+                            >
+                                Admin Registration
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
             {/* Footer */}
             <footer className="bg-purple-950 text-purple-200 py-6 text-center text-sm">
                 <p>© {new Date().getFullYear()} Aluminate. All rights reserved.</p>
