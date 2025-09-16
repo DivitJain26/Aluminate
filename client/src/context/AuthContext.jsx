@@ -11,4 +11,7 @@ export const AuthContext = createContext({
     updateProfile: async () => { },
     changePassword: async () => { },
     clearError: () => { },
+    isAdmin: null,
+    isAlumni: null,
+    isStudent: null,
 });

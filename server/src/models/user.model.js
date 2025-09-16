@@ -23,57 +23,64 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, 'Password is required'],
-        minlength: [8, 'Minimum password length is 6 characters'],
-        select: false, // Don't return password in queries
+        minlength: [8, 'Minimum password length is 8 characters'],
+        select: false,
     },
 
+    // Conditional fields
     collegeName: {
         type: String,
-        required: true,
         trim: true,
-        maxlength: 200
+        maxlength: 200,
+        required: function () { return this.role !== 'admin'; }
     },
 
     abcId: {
         type: String,
-        required: true,
         trim: true,
-        maxlength: 50
+        maxlength: 50,
+        required: function () { return this.role !== 'admin'; }
     },
 
     enrollment: {
         type: String,
-        required: true,
         trim: true,
-        maxlength: 50
+        maxlength: 50,
+        required: function () { return this.role !== 'admin'; }
+    },
+
+    degree: {
+        type: String,
+        trim: true,
+        maxlength: 100,
     },
 
     course: {
         type: String,
-        required: true,
         trim: true,
-        maxlength: 100
+        maxlength: 100,
+        required: function () { return this.role !== 'admin'; }
     },
 
     specialization: {
         type: String,
-        required: true,
         trim: true,
-        maxlength: 100
+        maxlength: 100,
+        required: function () { return this.role !== 'admin'; }
     },
 
     yearOfJoining: {
         type: Number,
-        required: true,
         min: 2000,
-        max: new Date().getFullYear() + 5
+        max: new Date().getFullYear() + 5,
+        required: function () { return this.role !== 'admin'; }
     },
 
     yearOfPassing: {
         type: Number,
-        required: true,
         min: 2000,
-        max: new Date().getFullYear() + 10
+        max: new Date().getFullYear() + 10,
+        required: function () { return this.role !== 'admin'; }
     },
 
     currentStatus: {
@@ -105,19 +112,52 @@ const userSchema = new mongoose.Schema({
         maxlength: 50
     }],
 
-    currentCompany: {
-        type: String,
-        trim: true,
-        maxlength: 200,
-        default: ''
-    },
-
-    currentPosition: {
+    city: {
         type: String,
         trim: true,
         maxlength: 100,
         default: ''
     },
+
+    experience: [
+        {
+            company: {
+                type: String,
+                required: true,
+                trim: true,
+                maxlength: 200
+            },
+
+            position: {
+                type: String,
+                required: true,
+                trim: true,
+                maxlength: 100
+            },
+
+            startDate: {
+                type: Date,
+                required: true
+            },
+
+            endDate: {
+                type: Date,
+                default: null // null if currently working
+            },
+
+            description: {
+                type: String,
+                trim: true,
+                maxlength: 1000,
+                default: ''
+            },
+            
+            isCurrent: {
+                type: Boolean,
+                default: false
+            }
+        }
+    ],
 
     linkedinProfile: {
         type: String,
@@ -143,11 +183,13 @@ const userSchema = new mongoose.Schema({
 
     refreshToken: {
         type: String,
-        select: false, // Don't return refresh token in queries
+        select: false
     }
+
 }, {
     timestamps: true
 });
+
 
 // Pre-save hook to hash password before saving
 userSchema.pre('save', async function (next) {

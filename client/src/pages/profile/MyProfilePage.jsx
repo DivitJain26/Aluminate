@@ -1,34 +1,31 @@
-import { useRef, } from "react";
+import { useRef } from "react";
 import { Edit, Camera } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
 
 export default function MyProfilePage() {
     const { user } = useAuth();
-
     const fileInputRef = useRef(null);
-    const name = user.name ?? "there"
-    const email = user.email ?? "there"
-    const college = user.collegeName ?? "MIT ADT University"
-    const course = user.course ?? "N/A";
-    const specialization = user.specialization ?? "N/A";
-    const yearOfJoining = user.yearOfJoining ?? "N/A";
-    const yearOfPassing = user.yearOfPassing ?? "N/A";
-    const profileImage = user.profileImage ?? "";
-    const bio = user.bio.length > 0 ? user.bio : "No bio added yet.";
-    const skills = user.skills && user.skills.length > 0
-        ? user.skills
-        : ["No skills added yet"];
-    const currentCompany = user.currentCompany ?? "";
-    const currentPosition = user.currentPosition ?? "";
-    const linkedinProfile = user.linkedinProfile ?? "";
-    const githubProfile = user.githubProfile ?? "";
 
+    // Create a userData object with defaults
+    const userData = {
+        name: user?.name ?? "there",
+        email: user?.email ?? "there",
+        college: user?.collegeName ?? "MIT ADT University",
+        course: user?.course ?? "N/A",
+        specialization: user?.specialization ?? "N/A",
+        yearOfJoining: user?.yearOfJoining ?? "N/A",
+        yearOfPassing: user?.yearOfPassing ?? "N/A",
+        profileImage: user?.profileImage ?? "",
+        bio: user?.bio?.length > 0 ? user.bio : "No bio added yet.",
+        skills: user?.skills && user.skills.length > 0 ? user.skills : ["No skills added yet"],
+        experience: user?.experience ?? [],
+        linkedinProfile: user?.linkedinProfile ?? "",
+        githubProfile: user?.githubProfile ?? ""
+    };
 
     return (
         <div className="min-h-screen bg-purple-50">
-
-            {/* Profile Page */}
             <div className="flex flex-col items-center py-10 space-y-6">
                 <h1 className="text-3xl font-bold text-black mb-5">Profile</h1>
 
@@ -36,11 +33,10 @@ export default function MyProfilePage() {
                 <div className="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-6 flex items-center space-x-6">
                     <div className="relative">
                         <img
-                            src={profileImage || "https://via.placeholder.com/100"}
+                            src={userData.profileImage || "https://via.placeholder.com/100"}
                             alt="Profile"
                             className="w-24 h-24 rounded-full object-cover border-4 border-purple-200"
                         />
-                        {/* Edit Icon Overlay */}
                         <Link to="/edit-profile">
                             <button
                                 onClick={() => fileInputRef.current.click()}
@@ -52,47 +48,27 @@ export default function MyProfilePage() {
                     </div>
                     <div>
                         <h2 className="text-2xl font-semibold text-purple-700">
-                            {name}
+                            {userData.name}
                         </h2>
-                        <p className="text-gray-500">{email}</p>
+                        <p className="text-gray-500">{userData.email}</p>
                     </div>
                 </div>
 
-                {/* Bio Section */}
+                {/* Bio */}
                 <div className="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-6">
-                    <h3 className="text-xl font-semibold text-purple-700 mb-4">
-                        Bio
-                    </h3>
-                    <div className="space-y-2 text-gray-700">
-                        <p>{bio}</p>
-                    </div>
+                    <h3 className="text-xl font-semibold text-purple-700 mb-4">Bio</h3>
+                    <p className="text-gray-700">{userData.bio}</p>
                 </div>
 
                 {/* University Details */}
                 <div className="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-6">
-                    <h3 className="text-xl font-semibold text-purple-700 mb-4">
-                        University Details
-                    </h3>
+                    <h3 className="text-xl font-semibold text-purple-700 mb-4">University Details</h3>
                     <div className="space-y-2 text-gray-700">
-                        <p>
-                            <span className="font-semibold">Institution:</span>{" "}
-                            {college}
-                        </p>
-                        <p>
-                            <span className="font-semibold">Course:</span> {course}
-                        </p>
-                        <p>
-                            <span className="font-semibold">Specialization:</span> {specialization}
-                        </p>
-                        <p>
-                            <span className="font-semibold">Admission Year:</span>{" "}
-                            {yearOfJoining}
-                        </p>
-                        <p>
-                            <span className="font-semibold">Graduation Year:</span>{" "}
-                            {yearOfPassing}
-                        </p>
-
+                        <p><span className="font-semibold">Institution:</span> {userData.college}</p>
+                        <p><span className="font-semibold">Course:</span> {userData.course}</p>
+                        <p><span className="font-semibold">Specialization:</span> {userData.specialization}</p>
+                        <p><span className="font-semibold">Admission Year:</span> {userData.yearOfJoining}</p>
+                        <p><span className="font-semibold">Graduation Year:</span> {userData.yearOfPassing}</p>
                     </div>
                 </div>
 
@@ -100,16 +76,8 @@ export default function MyProfilePage() {
                 <div className="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-6">
                     <h3 className="text-xl font-semibold text-purple-700 mb-4">Skills</h3>
                     <div className="flex flex-wrap gap-2">
-                        {(skills
-                            ? Array.isArray(skills)
-                                ? skills
-                                : skills.split(",").map(s => s.trim())
-                            : ["No skills added yet"]
-                        ).map((skill, idx) => (
-                            <span
-                                key={idx}
-                                className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm"
-                            >
+                        {userData.skills.map((skill, idx) => (
+                            <span key={idx} className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm">
                                 {skill}
                             </span>
                         ))}
@@ -118,38 +86,28 @@ export default function MyProfilePage() {
 
                 {/* Experience */}
                 <div className="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-6">
-                    <h3 className="text-xl font-semibold text-purple-700 mb-4">
-                        Job/Internship Experience
-                    </h3>
-                    <div className="space-y-2 text-gray-700">
-                        <p>
-                            <span className="font-semibold">Current Company:</span>{" "}
-                            {currentCompany}
-                        </p>
-                        <p>
-                            <span className="font-semibold">Current Position:</span>{" "}
-                            {currentPosition}
-                        </p>
-
+                    <h3 className="text-xl font-semibold text-purple-700 mb-4">Job/Internship Experience</h3>
+                    <div className="space-y-4 text-gray-700">
+                        {userData.experience.length > 0 ? (
+                            userData.experience.map((job, idx) => (
+                                <div key={idx} className="border-l-4 border-purple-300 pl-4 py-2">
+                                    <p><span className="font-semibold">Company:</span> {job.company}</p>
+                                    <p><span className="font-semibold">Position:</span> {job.position}</p>
+                                    <p><span className="font-semibold">Duration:</span> {new Date(job.startDate).toLocaleDateString()} - {job.isCurrent ? "Present" : new Date(job.endDate).toLocaleDateString()}</p>
+                                    {job.description && <p><span className="font-semibold">Description:</span> {job.description}</p>}
+                                </div>
+                            ))
+                        ) : (
+                            <p>No job/internship experience added yet.</p>
+                        )}
                     </div>
-
                 </div>
 
+                {/* Additional Info */}
                 <div className="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-6">
-                    <h3 className="text-xl font-semibold text-purple-700 mb-4">
-                        Additional Information
-                    </h3>
-                    <div className="space-y-2 text-gray-700">
-                        <p>
-                            <span className="font-semibold">LinkedIn:</span>{" "}
-                            {linkedinProfile}
-                        </p>
-                        <p>
-                            <span className="font-semibold">Github:</span>{" "}
-                            {githubProfile}
-                        </p>
-                    </div>
-
+                    <h3 className="text-xl font-semibold text-purple-700 mb-4">Additional Information</h3>
+                    <p><span className="font-semibold">LinkedIn:</span> {userData.linkedinProfile}</p>
+                    <p><span className="font-semibold">Github:</span> {userData.githubProfile}</p>
                 </div>
 
                 {/* Edit Button */}
