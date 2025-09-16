@@ -12,7 +12,7 @@ import RootLayout from '../components/layout/RootLayout'; // Corrected import pa
 import ProfilePage from '../pages/profile/MyProfilePage.jsx';
 import EditProfilePage from '../pages/profile/EditProfilePage.jsx';
 import ViewProfilePage from '../pages/profile/ViewProfilePage.jsx';
-import AdminDownloadPage from '../pages/AdminDownload.jsx'; //arya added this
+import AdminRegisterPage  from '../pages/auth/AdminRegisterPage.jsx'; //arya added this
 import Chatpage from '../pages/Chatpage.jsx'; //arya added this
 
 export const router = createBrowserRouter([
@@ -27,7 +27,6 @@ export const router = createBrowserRouter([
                     { path: "/my-profile", element: <ProfilePage /> },
                     { path: "/edit-profile", element: <EditProfilePage /> },
                     { path: "/view-profile/:id", element: <ViewProfilePage /> },
-                    { path: "/admindownload", element: <AdminDownloadPage /> }, //arya added this
                     { path: "/messages", element: <Chatpage /> } //arya added this
                 ],
             },
@@ -39,6 +38,7 @@ export const router = createBrowserRouter([
             { path: "/", element: <LandingPage /> },
             { path: "/login", element: <LoginPage /> },
             { path: "/register", element: <RegisterPage /> },
+            { path: "/admin-register", element: <AdminRegisterPage /> }, 
         ]
     },
 ]);

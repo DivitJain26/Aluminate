@@ -5,7 +5,7 @@
 
 **Install dependencies:**
 ```bash
-npm install:all
+npm run install:all
 ```
 
 ## Scripts & Commands

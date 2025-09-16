@@ -114,11 +114,12 @@ const LandingPage = () => {
                                 Create a vibrant community where achievements are celebrated,
                                 opportunities are shared, and meaningful networks thrive beyond graduation.
                             </p>
-                            <button
+                            <Link
+                                to='admin-register'
                                 className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold shadow-md hover:bg-purple-500 transition"
                             >
                                 Admin Registration
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

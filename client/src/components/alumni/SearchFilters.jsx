@@ -1,4 +1,4 @@
-import { Search, Filter, X } from "lucide-react";
+import { Search, Filter, X, Download } from "lucide-react";
 
 export default function SearchFilters({
     searchTerm,
@@ -8,7 +8,9 @@ export default function SearchFilters({
     clearFilters,
     showFilters,
     setShowFilters,
-    totalCount
+    totalCount,
+    // isAdmin, // 👈 pass this prop from AuthContext or parent
+    handleDownload // 👈 callback to handle CSV/Excel/PDF download
 }) {
     return (
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
@@ -34,20 +36,32 @@ export default function SearchFilters({
                     <span>Advanced Filters</span>
                 </button>
 
-                {(searchTerm || Object.values(filters).some(f => f)) && (
-                    <div className="flex items-center space-x-4">
-                        <span className="text-sm text-gray-600">
-                            {totalCount} alumni found
-                        </span>
-                        <button
-                            onClick={clearFilters}
-                            className="flex items-center space-x-1 text-red-600 hover:text-red-700 text-sm"
-                        >
-                            <X className="w-4 h-4" />
-                            <span>Clear all</span>
-                        </button>
-                    </div>
-                )}
+                <div className="flex items-center space-x-4">
+                    {(searchTerm || Object.values(filters).some(f => f)) && (
+                        <>
+                            <span className="text-sm text-gray-600">
+                                {totalCount} alumni found
+                            </span>
+                            <button
+                                onClick={clearFilters}
+                                className="flex items-center space-x-1 text-red-600 hover:text-red-700 text-sm"
+                            >
+                                <X className="w-4 h-4" />
+                                <span>Clear all</span>
+                            </button>
+                        </>
+                    )}
+
+
+                    <button
+                        onClick={handleDownload}
+                        className="flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-xl shadow hover:bg-purple-700 transition"
+                    >
+                        <Download className="w-4 h-4" />
+                        <span>Download Data</span>
+                    </button>
+
+                </div>
             </div>
 
             {showFilters && (

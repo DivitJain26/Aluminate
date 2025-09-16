@@ -65,14 +65,14 @@ export const usersAPI = {
     // },
 
     // updateUserRole: (id, role) => api.put(`/users/${id}/role`, { role }),
-    
+
     // updateUserStatus: (id, isActive) => api.put(`/users/${id}/status`, { isActive }),
 };
 
 // Admin API
 export const adminAPI = {
-    downloadData: () => api.get('/admin/download' ,{
-      responseType: "blob", // 👈 ensures Excel comes as binary
+    downloadData: () => api.get('/admin/download', {
+        responseType: "blob", // ensures Excel comes as binary
     })
 }
 
