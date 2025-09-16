@@ -9,6 +9,15 @@ export default function EditProfilePage() {
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
 
+    const formatDate = (date) => {
+        if (!date) return "";
+        const d = new Date(date);
+        const month = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        const year = d.getFullYear();
+        return `${year}-${month}-${day}`;
+    };
+
     const {
         register,
         handleSubmit,
@@ -25,8 +34,11 @@ export default function EditProfilePage() {
             yearOfJoining: user.yearOfJoining ?? "",
             yearOfPassing: user.yearOfPassing ?? "",
             skills: user.skills ?? [],
-            currentCompany: user.currentCompany ?? "",
-            currentPosition: user.currentPosition ?? "",
+            experience: (user.experience || []).map(exp => ({
+                ...exp,
+                startDate: formatDate(exp.startDate),
+                endDate: formatDate(exp.endDate)
+            })),  // new
             linkedinProfile: user.linkedinProfile ?? "",
             githubProfile: user.githubProfile ?? "",
             profileImage: user.profileImage ?? "https://via.placeholder.com/100",
@@ -65,7 +77,7 @@ export default function EditProfilePage() {
                     <div className="flex flex-col items-center">
                         <div className="relative">
                             <img
-                                src={user.profileImage}
+                                src={user.profileImage || "https://via.placeholder.com/100"}
                                 alt="Profile"
                                 className="w-24 h-24 rounded-full object-cover border-4 border-purple-200"
                             />
@@ -195,7 +207,7 @@ export default function EditProfilePage() {
                     </div>
 
 
-                    <div>
+                    {/* <div>
                         <label className="block text-sm font-medium text-gray-700">
                             Current Company
                         </label>
@@ -215,6 +227,80 @@ export default function EditProfilePage() {
                             {...register("currentPosition")}
                             className="w-full mt-1 p-2 border rounded-lg"
                         />
+                    </div> */}
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Experience</label>
+                        {watch("experience")?.map((exp, idx) => (
+                            <div key={idx} className="border p-4 rounded mb-3 space-y-2">
+                                <div className="flex justify-between items-center">
+                                    <span className="font-semibold">Job {idx + 1}</span>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const newExp = [...watch("experience")];
+                                            newExp.splice(idx, 1);
+                                            setValue("experience", newExp, { shouldValidate: true });
+                                        }}
+                                        className="text-red-500 font-bold"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+
+                                <input
+                                    type="text"
+                                    placeholder="Company"
+                                    {...register(`experience.${idx}.company`, { required: true })}
+                                    className="w-full mt-1 p-2 border rounded-lg"
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Position"
+                                    {...register(`experience.${idx}.position`, { required: true })}
+                                    className="w-full mt-1 p-2 border rounded-lg"
+                                />
+                                <div className="flex space-x-2">
+                                    <input
+                                        type="date"
+                                        placeholder="Start Date"
+                                        {...register(`experience.${idx}.startDate`, { required: true })}
+                                        className="w-1/2 mt-1 p-2 border rounded-lg"
+                                    />
+                                    <input
+                                        type="date"
+                                        placeholder="End Date"
+                                        {...register(`experience.${idx}.endDate`)}
+                                        className="w-1/2 mt-1 p-2 border rounded-lg"
+                                    />
+                                </div>
+                                <textarea
+                                    placeholder="Description"
+                                    {...register(`experience.${idx}.description`)}
+                                    className="w-full mt-1 p-2 border rounded-lg"
+                                />
+                                <label className="flex items-center gap-2 mt-1">
+                                    <input
+                                        type="checkbox"
+                                        {...register(`experience.${idx}.isCurrent`)}
+                                    />
+                                    Currently Working
+                                </label>
+                            </div>
+                        ))}
+
+                        <button
+                            type="button"
+                            onClick={() =>
+                                setValue("experience", [
+                                    ...(watch("experience") || []),
+                                    { company: "", position: "", startDate: "", endDate: "", description: "", isCurrent: false }
+                                ])
+                            }
+                            className="px-3 py-1 bg-purple-100 text-purple-700 rounded"
+                        >
+                            Add Experience
+                        </button>
                     </div>
 
                     <div>

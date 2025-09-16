@@ -15,40 +15,30 @@ export const getProfiles = async (req, res) => {
             limit = 20
         } = req.query;
 
-        // Base query
+        // Base query: alumni and active users
         const query = {
             currentStatus: 'alumni',
             isActive: true,
-            _id: { $ne: req.user?._id } // Exclude current user if logged in
+            _id: { $ne: req.user?._id } // exclude current user if logged in
         };
 
-        // Text search across multiple fields
+        // Text search across multiple fields including experience
         if (search) {
             query.$or = [
                 { name: { $regex: search, $options: 'i' } },
                 { collegeName: { $regex: search, $options: 'i' } },
                 { course: { $regex: search, $options: 'i' } },
                 { specialization: { $regex: search, $options: 'i' } },
-                { currentCompany: { $regex: search, $options: 'i' } },
-                { currentPosition: { $regex: search, $options: 'i' } }
+                { city: { $regex: search, $options: 'i' } },
+                { 'experience.company': { $regex: search, $options: 'i' } },
+                { 'experience.position': { $regex: search, $options: 'i' } },
             ];
         }
 
-        if (collegeName) {
-            query.collegeName = { $regex: collegeName, $options: 'i' };
-        }
-
-        if (course) {
-            query.course = { $regex: course, $options: 'i' };
-        }
-
-        if (specialization) {
-            query.specialization = { $regex: specialization, $options: 'i' };
-        }
-
-        if (yearOfPassing) {
-            query.yearOfPassing = parseInt(yearOfPassing);
-        }
+        if (collegeName) query.collegeName = { $regex: collegeName, $options: 'i' };
+        if (course) query.course = { $regex: course, $options: 'i' };
+        if (specialization) query.specialization = { $regex: specialization, $options: 'i' };
+        if (yearOfPassing) query.yearOfPassing = parseInt(yearOfPassing);
 
         if (skills) {
             const skillsArray = skills.split(',').map(skill => skill.trim());
@@ -61,13 +51,12 @@ export const getProfiles = async (req, res) => {
         // Execute query
         const [alumni, totalCount] = await Promise.all([
             User.find(query)
-                .sort({ name: 1 }) // sort alphabetically by name
+                .sort({ name: 1 })
                 .skip(skip)
                 .limit(parseInt(limit)),
             User.countDocuments(query)
         ]);
 
-        // Pagination info
         const totalPages = Math.ceil(totalCount / parseInt(limit));
         const hasNextPage = parseInt(page) < totalPages;
         const hasPrevPage = parseInt(page) > 1;
@@ -86,6 +75,7 @@ export const getProfiles = async (req, res) => {
                 }
             }
         });
+
     } catch (error) {
         console.error('Get profiles error:', error);
         res.status(500).json({
@@ -95,6 +85,7 @@ export const getProfiles = async (req, res) => {
         });
     }
 };
+
 
 
 export const getProfileById = async (req, res) => {

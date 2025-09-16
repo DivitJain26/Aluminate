@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { authAPI } from '../utils/api.js';
-import { AuthContext } from './AuthContext.js';
+import { AuthContext } from './AuthContext.jsx';
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         // Check if user is logged in by verifying with the server
         const savedUser = localStorage.getItem('user');
-        
+
         if (savedUser) {
             try {
                 const userData = JSON.parse(savedUser);
@@ -151,7 +151,7 @@ export const AuthProvider = ({ children }) => {
 
                 // Update localStorage
                 localStorage.setItem('user', JSON.stringify(updatedUser));
-                 console.log('User profile updated:', updatedUser);
+                console.log('User profile updated:', updatedUser);
                 // Update state
                 setUser(updatedUser);
 
@@ -194,6 +194,11 @@ export const AuthProvider = ({ children }) => {
 
     const clearError = () => setError(null);
 
+    const hasRole = (role) => user?.role === role;
+    const isAdmin = () => hasRole("admin");
+    const isAlumni = () => hasRole("alumni");
+    const isStudent = () => hasRole("student");
+
     const value = {
         user,
         isAuthenticated,
@@ -204,7 +209,10 @@ export const AuthProvider = ({ children }) => {
         logout,
         updateProfile,
         changePassword,
-        clearError
+        clearError,
+        isAdmin,
+        isAlumni,
+        isStudent,
     };
 
     return (
