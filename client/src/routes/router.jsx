@@ -13,6 +13,7 @@ import ProfilePage from '../pages/profile/MyProfilePage.jsx';
 import EditProfilePage from '../pages/profile/EditProfilePage.jsx';
 import ViewProfilePage from '../pages/profile/ViewProfilePage.jsx';
 import AdminDownloadPage from '../pages/AdminDownload.jsx'; //arya added this
+import Chatpage from '../pages/Chatpage.jsx'; //arya added this
 
 export const router = createBrowserRouter([
     {
@@ -26,7 +27,8 @@ export const router = createBrowserRouter([
                     { path: "/my-profile", element: <ProfilePage /> },
                     { path: "/edit-profile", element: <EditProfilePage /> },
                     { path: "/view-profile/:id", element: <ViewProfilePage /> },
-                    { path: "/admindownload", element: <AdminDownloadPage /> } //arya added this
+                    { path: "/admindownload", element: <AdminDownloadPage /> }, //arya added this
+                    { path: "/messages", element: <Chatpage /> } //arya added this
                 ],
             },
         ]
