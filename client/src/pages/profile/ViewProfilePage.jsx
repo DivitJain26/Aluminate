@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { 
-  Building, 
-  BookOpen, 
-  Calendar, 
-  MessageCircle, 
-  Mail,
-  MapPin,
-  Award,
-  Github, 
-  ChevronLeft, 
-  Linkedin,
-  Briefcase,
-  User,
-  Star,
-  ExternalLink
+import {
+    Building,
+    BookOpen,
+    Calendar,
+    MessageCircle,
+    Mail,
+    MapPin,
+    Award,
+    Github,
+    ChevronLeft,
+    Linkedin,
+    Briefcase,
+    User,
+    Star,
+    ExternalLink
 } from "lucide-react";
 import { usersAPI } from '../../utils/api.js';
 import ProfileHeader from '../../components/ui/ProfileHeader';
@@ -52,13 +52,13 @@ export default function ViewProfilePage() {
 
     // Calculate years of experience
     const calculateExperience = (experience) => {
-      if (!experience || experience.length === 0) return 0;
-      
-      const sortedExp = [...experience].sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
-      const earliestStart = new Date(sortedExp[0].startDate);
-      const currentDate = new Date();
-      
-      return Math.floor((currentDate - earliestStart) / (365.25 * 24 * 60 * 60 * 1000));
+        if (!experience || experience.length === 0) return 0;
+
+        const sortedExp = [...experience].sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+        const earliestStart = new Date(sortedExp[0].startDate);
+        const currentDate = new Date();
+
+        return Math.floor((currentDate - earliestStart) / (365.25 * 24 * 60 * 60 * 1000));
     };
 
     if (loading) {
@@ -105,7 +105,7 @@ export default function ViewProfilePage() {
                 {/* Profile Header */}
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
                     <ProfileHeader profile={profile} />
-                    
+
                     {/* Stats Bar */}
                     <div className="border-t border-gray-100">
                         <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-100">
@@ -242,7 +242,7 @@ export default function ViewProfilePage() {
 
                             <div className="space-y-4">
                                 <h4 className="font-medium text-gray-700 border-b pb-2">Professional Profiles</h4>
-                                
+
                                 {profile.linkedinProfile && (
                                     <a
                                         href={profile.linkedinProfile}
@@ -281,7 +281,15 @@ export default function ViewProfilePage() {
                                 <MapPin className="w-5 h-5 mr-2 text-purple-600" />
                                 Additional Information
                             </h3>
+                            
                             <div className="space-y-3">
+                                <div className="flex justify-between">
+                                    <span className="text-gray-600">City</span>
+                                    <span className="font-medium text-purple-700">
+                                        {profile.city || "Not specified"}
+                                    </span>
+                                </div>
+
                                 <div className="flex justify-between">
                                     <span className="text-gray-600">Member Since</span>
                                     <span className="font-medium text-purple-700">
@@ -311,13 +319,13 @@ export default function ViewProfilePage() {
 function calculateJobDuration(startDate, endDate, isCurrent) {
     const start = new Date(startDate);
     const end = isCurrent ? new Date() : new Date(endDate);
-    
+
     const years = end.getFullYear() - start.getFullYear();
     const months = end.getMonth() - start.getMonth();
-    
+
     let duration = '';
     if (years > 0) duration += `${years} yr${years > 1 ? 's' : ''} `;
     if (months > 0 || years === 0) duration += `${months} mo${months !== 1 ? 's' : ''}`;
-    
+
     return duration.trim();
 }

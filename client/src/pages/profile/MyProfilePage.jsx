@@ -21,7 +21,8 @@ export default function MyProfilePage() {
         skills: user?.skills && user.skills.length > 0 ? user.skills : ["No skills added yet"],
         experience: user?.experience ?? [],
         linkedinProfile: user?.linkedinProfile ?? "",
-        githubProfile: user?.githubProfile ?? ""
+        githubProfile: user?.githubProfile ?? "",
+        city: user?.city ?? "N/A" 
     };
 
     return (
@@ -69,6 +70,7 @@ export default function MyProfilePage() {
                         <p><span className="font-semibold">Specialization:</span> {userData.specialization}</p>
                         <p><span className="font-semibold">Admission Year:</span> {userData.yearOfJoining}</p>
                         <p><span className="font-semibold">Graduation Year:</span> {userData.yearOfPassing}</p>
+                        <p><span className="font-semibold">City:</span> {userData.city}</p>
                     </div>
                 </div>
 
