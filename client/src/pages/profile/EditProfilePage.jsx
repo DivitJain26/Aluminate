@@ -54,12 +54,13 @@ export default function EditProfilePage() {
         }
     };
 
-    const onSubmit = (data) => {
-        console.log(data);
-
-        updateProfile(data);
-        navigate("/my-profile");
-        window.location.reload();
+    const onSubmit = async (data) => {
+        try {
+            await updateProfile(data);
+            navigate("/my-profile");
+        } catch (err) {
+            console.error("Profile update failed:", err);
+        }
     };
 
     return (

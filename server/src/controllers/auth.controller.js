@@ -290,7 +290,7 @@ export const updateProfile = async (req, res) => {
     const { email, ...updates } = req.body;
 
     if (!email) {
-      return res.status(400).json({ message: "Email is required to update profile" });
+      return res.status(400).json({ success: false, message: "Email is required to update profile", data: null });
     }
 
     const user = await User.findOneAndUpdate(
@@ -300,17 +300,21 @@ export const updateProfile = async (req, res) => {
     );
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ success: false, message: "User not found", data: null });
     }
 
     res.status(200).json({
+      success: true,
       message: "Profile updated successfully",
-      user,
+      data: {
+        user,
+      },
     });
   } catch (error) {
     res.status(500).json({
-      message: "Error updating profile",
-      error: error.message,
+      success: false,
+      message: `Error updating profile: ${error.message}`,
+      data: null,
     });
   }
 };

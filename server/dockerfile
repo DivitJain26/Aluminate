@@ -1,0 +1,18 @@
+FROM node:20-slim
+
+ENV NODE_ENV=development
+
+WORKDIR /app
+
+# Install deps first so this layer caches across source changes
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+COPY src ./src
+
+# node:20-slim ships a non-root "node" user
+USER node
+
+EXPOSE 5000
+
+CMD ["node", "src/index.js"]
